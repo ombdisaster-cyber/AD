@@ -1,0 +1,9 @@
+{
+  "name": "OMBACIANS",
+  "short_name": "OMBACIANS",
+  "description": "The digital community of ST JOSEPH'S COLLEGE OMBACI.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#081525",
+  "theme_color": "#081525"
+}
