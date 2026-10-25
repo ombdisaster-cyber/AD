@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>St Joseph's College Ombaci | Attendance</title>
+
+<style>
+:root {
+    --navy: #102342;
+    --blue: #2356d8;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --green: #168653;
+    --red: #d93636;
+    --orange: #c77713;
+    --gray: #697586;
+    --border: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--light);
+    color: #1d2939;
+}
+
+header {
+    background: var(--navy);
+    color: white;
+    padding: 22px;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.school-title h1 {
+    font-size: 24px;
+    margin: 0 0 7px;
+}
+
+.school-title p {
+    margin: 0;
+    color: #c9d6ea;
+    font-size: 13px;
+}
+
+.header-date {
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1400px;
+    padding: 24px;
+    margin: auto;
+}
+
+.navigation {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+button, select, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.nav-btn {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 17px;
+    color: var(--navy);
+    font-weight: bold;
+}
+
+.nav-btn.active {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    margin: 0 0 6px;
+    color: var(--navy);
+}
+
+.section-heading p {
+    color: var(--gray);
+    margin: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 5px #152b4610;
+}
+
+.stat-card .label {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 12px;
+}
+
+.stat-card .number {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--navy);
+}
+
+.stat-card .note {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 8px;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 5px #152b4608;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--navy);
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+input, select {
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
+    padding: 11px;
+    background: white;
+    color: #1d2939;
+    min-width: 0;
+}
+
+.toolbar input[type="search"] {
+    flex: 1;
+    min-width: 180px;
+}
+
+.btn {
+    border: none;
+    border-radius: 7px;
+    padding: 11px 15px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-secondary {
+    background: #e8eefb;
+    color: var(--navy);
+}
+
+.btn-success {
+    background: var(--green);
+    color: white;
+}
+
+.btn-danger {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+.btn-small {
+    padding: 7px 10px;
+    font-size: 12px;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 700px;
+    font-size: 14px;
+}
+
+th {
+    text-align: left;
+    background: #f5f7fa;
+    color: #475467;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+th, td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+    background: #f9fbff;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.Present {
+    background: #d1fadf;
+    color: #05603a;
+}
+
+.Absent {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+.Late {
+    background: #fef0c7;
+    color: #93370d;
+}
+
+.Excused {
+    background: #e4e7ec;
+    color: #344054;
+}
+
+.empty {
+    padding: 30px;
+    text-align: center;
+    color: var(--gray);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #344054;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.notice {
+    padding: 14px;
+    border-radius: 8px;
+    background: #eff8ff;
+    border: 1px solid #b2ddff;
+    color: #1849a9;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.warning {
+    background: #fffaeb;
+    border-color: #fedf89;
+    color: #93370d;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    color: var(--gray);
+    padding: 25px;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 550px) {
+    .container {
+        padding: 14px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card .number {
+        font-size: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .school-title h1 {
+        font-size: 19px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
+@media print {
+    header {
+        background: white;
+        color: black;
+        padding: 10px 0;
+    }
+
+    header p {
+        color: black !important;
+    }
+
+    .navigation,
+    .no-print,
+    button,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .container {
+        padding: 0;
+        max-width: none;
+    }
+
+    .section {
+        display: none !important;
+    }
+
+    .section.active {
+        display: block !important;
+    }
+
+    .card, .stat-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+    }
+
+    table {
+        min-width: 0;
+        font-size: 10px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="school-title">
+            <h1>ST JOSEPH'S COLLEGE OMBACI</h1>
+            <p>STUDENT & TEACHER ATTENDANCE MANAGEMENT SYSTEM</p>
+        </div>
+
+        <div class="header-date">
+            <div id="currentDate"></div>
+            <div id="currentTime"></div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <nav class="navigation no-print">
+        <button class="nav-btn active" data-section="dashboard">
+            Dashboard
+        </button>
+
+        <button class="nav-btn" data-section="attendance">
+            Take Attendance
+        </button>
+
+        <button class="nav-btn" data-section="people">
+            Students & Teachers
+        </button>
+
+        <button class="nav-btn" data-section="reports">
+            Reports & Downloads
+        </button>
+
+        <button class="nav-btn" data-section="settings">
+            Settings & Backup
+        </button>
+    </nav>
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="section active">
+
+        <div class="section-heading">
+            <div>
+                <h2>School Dashboard</h2>
+                <p>Overview of daily school attendance.</p>
+            </div>
+
+            <button class="btn btn-primary no-print"
+                    onclick="showSection('attendance')">
+                + Take Attendance
+            </button>
+        </div>
+
+        <div class="notice">
+            <strong>Welcome!</strong>
+            This dashboard manages student and teacher attendance.
+            Choose a date to review the relevant attendance records.
+        </div>
+
+        <div class="toolbar no-print">
+            <label for="dashboardDate">Attendance date:</label>
+            <input type="date" id="dashboardDate">
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Registered Students</div>
+                <div class="number" id="totalStudents">0</div>
+                <div class="note">Across S1–S6</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Registered Teachers</div>
+                <div class="number" id="totalTeachers">0</div>
+                <div class="note">All registered teachers</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Students Present</div>
+                <div class="number" id="studentsPresent">0</div>
+                <div class="note">Selected date</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Teachers Present</div>
+                <div class="number" id="teachersPresent">0</div>
+                <div class="note">Selected date</div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Students Absent</div>
+                <div class="number" id="studentsAbsent">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Teachers Absent</div>
+                <div class="number" id="teachersAbsent">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Student Attendance</div>
+                <div class="number" id="studentRate">0%</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="label">Teacher Attendance</div>
+                <div class="number" id="teacherRate">0%</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Attendance by Class</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Registered</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Late</th>
+                            <th>Attendance Rate</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="classSummary"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ATTENDANCE -->
+
+    <section id="attendance" class="section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Take Attendance</h2>
+                <p>Record and update daily attendance.</p>
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="toolbar">
+                <select id="attendanceType">
+                    <option value="Student">Students</option>
+                    <option value="Teacher">Teachers</option>
+                </select>
+
+                <select id="attendanceClass">
+                    <option value="All">All Classes</option>
+                    <option value="S1">Senior One (S1)</option>
+                    <option value="S2">Senior Two (S2)</option>
+                    <option value="S3">Senior Three (S3)</option>
+                    <option value="S4">Senior Four (S4)</option>
+                    <option value="S5">Senior Five (S5)</option>
+                    <option value="S6">Senior Six (S6)</option>
+                </select>
+
+                <input type="date" id="attendanceDate">
+
+                <input type="search"
+                       id="attendanceSearch"
+                       placeholder="Search name or ID...">
+            </div>
+
+            <div class="toolbar no-print">
+                <button class="btn btn-secondary"
+                        onclick="markAll('Present')">
+                    Mark All Present
+                </button>
+
+                <button class="btn btn-secondary"
+                        onclick="markAll('Absent')">
+                    Mark All Absent
+                </button>
+
+                <button class="btn btn-primary"
+                        onclick="saveAttendance()">
+                    Save Attendance
+                </button>
+
+                <button class="btn btn-secondary"
+                        onclick="window.print()">
+                    Print Register
+                </button>
+            </div>
+
+            <div class="notice warning">
+                Marking everyone present or absent affects the currently
+                displayed group. Check the selected class and date first.
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student/Staff ID</th>
+                            <th>Name</th>
+                            <th>Class/Department</th>
+                            <th>Attendance Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="attendanceTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- PEOPLE -->
+
+    <section id="people" class="section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Students & Teachers</h2>
+                <p>Register and manage school members.</p>
+            </div>
+        </div>
+
+        <div class="card no-print">
+            <h3>Register a Student or Teacher</h3>
+
+            <form id="personForm">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="personType">Person Type</label>
+
+                        <select id="personType" required>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personId">Student/Staff ID</label>
+                        <input id="personId"
+                               required
+                               maxlength="40"
+                               placeholder="e.g. SJC001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personName">Full Name</label>
+                        <input id="personName"
+                               required
+                               maxlength="100"
+                               placeholder="Enter full name">
+                    </div>
+
+                    <div class="form-group" id="classGroup">
+                        <label for="personClass">Class</label>
+
+                        <select id="personClass">
+                            <option value="S1">Senior One (S1)</option>
+                            <option value="S2">Senior Two (S2)</option>
+                            <option value="S3">Senior Three (S3)</option>
+                            <option value="S4">Senior Four (S4)</option>
+                            <option value="S5">Senior Five (S5)</option>
+                            <option value="S6">Senior Six (S6)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personDetails">
+                            <span id="detailsLabel">Stream / Other Details</span>
+                        </label>
+
+                        <input id="personDetails"
+                               maxlength="100"
+                               placeholder="e.g. East">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Register Person
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <select id="peopleType">
+                    <option value="All">All People</option>
+                    <option value="Student">Students</option>
+                    <option value="Teacher">Teachers</option>
+                </select>
+
+                <select id="peopleClass">
+                    <option value="All">All Classes</option>
+                    <option value="S1">S1</option>
+                    <option value="S2">S2</option>
+                    <option value="S3">S3</option>
+                    <option value="S4">S4</option>
+                    <option value="S5">S5</option>
+                    <option value="S6">S6</option>
+                </select>
+
+                <input type="search"
+                       id="peopleSearch"
+                       placeholder="Search registered people...">
+
+                <button class="btn btn-secondary no-print"
+                        onclick="exportPeople()">
+                    Download People CSV
+                </button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Class/Department</th>
+                            <th>Details</th>
+                            <th class="no-print">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="peopleTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- REPORTS -->
+
+    <section id="reports" class="section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Reports & Downloads</h2>
+                <p>Download records for Excel or print them.</p>
+            </div>
+        </div>
+
+        <div class="card no-print">
+            <h3>Attendance Report Filters</h3>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="reportStart">Start Date</label>
+                    <input type="date" id="reportStart">
+                </div>
+
+                <div class="form-group">
+                    <label for="reportEnd">End Date</label>
+                    <input type="date" id="reportEnd">
+                </div>
+
+                <div class="form-group">
+                    <label for="reportType">Person Type</label>
+
+                    <select id="reportType">
+                        <option value="All">Students & Teachers</option>
+                        <option value="Student">Students Only</option>
+                        <option value="Teacher">Teachers Only</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reportClass">Class</label>
+
+                    <select id="reportClass">
+                        <option value="All">All Classes</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                        <option value="S3">S3</option>
+                        <option value="S4">S4</option>
+                        <option value="S5">S5</option>
+                        <option value="S6">S6</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="toolbar" style="margin-top:20px">
+                <button class="btn btn-primary"
+                        onclick="generateReport()">
+                    Generate Report
+                </button>
+
+                <button class="btn btn-success"
+                        onclick="exportReport()">
+                    Download A
